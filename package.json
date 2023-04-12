@@ -1,6 +1,6 @@
 {
   "name": "spellbook-forge",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Make your LLM prompts executable and version controlled by adding an API layer.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,6 +22,7 @@
     "type": "git",
     "url": "git+https://github.com/rafalzawadzki/spellbook-forge.git"
   },
+  "homepage": "https://github.com/rafalzawadzki/spellbook-forge#readme",
   "keywords": [
     "express",
     "middleware",

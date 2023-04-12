@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
-import { deleteFile, getFile, resolveRepositoryUrl, upsertFile } from './git-file-repository';
+import { deleteFile, getPromptBundle, resolveRepositoryUrl, upsertFile } from './git-file-repository';
 import { executePrompt } from './execute-prompt';
 
 export const getOrAct = async (req: Request, res: Response) => {
   try {
     const repositoryUrl = resolveRepositoryUrl(req);
     const filePath = req.params[0];
-    const content = await getFile(repositoryUrl, filePath);
+    const promptBundle = await getPromptBundle(repositoryUrl, filePath);
     if (req.query.execute) {
-      const response = await executePrompt(content);
+      const response = await executePrompt(promptBundle.template);
       res.json({
-        'prompt-content': content,
+        'prompt-content': promptBundle.template,
         response,
       });
     } else {
-      res.json({ content });
+      res.json({ content: promptBundle.template });
     }
     //cleanupTempRepo(cloneFolder)
   } catch (error: any) {

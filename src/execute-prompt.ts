@@ -1,4 +1,4 @@
-import { OpenAI } from "langchain/llms/openai";
+import { OpenAI } from 'langchain/llms/openai';
 
 export const executePrompt = async (promptContent: string) => {
   try {
@@ -8,6 +8,6 @@ export const executePrompt = async (promptContent: string) => {
     });
     return model.call(promptContent);
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-}
+};

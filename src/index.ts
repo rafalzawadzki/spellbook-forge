@@ -1,8 +1,8 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
-import {NextFunction, Router, Response, Request} from "express";
-import {del, getOrAct, upsert} from "./prompts-controller";
-import {ForgeOptions} from "./types";
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { NextFunction, Router, Response, Request } from 'express';
+import { del, getOrAct, upsert } from './prompts-controller';
+import { ForgeOptions } from './types';
 
 export function spellbookForge(options: ForgeOptions) {
   const router = Router();
@@ -12,11 +12,11 @@ export function spellbookForge(options: ForgeOptions) {
       req.options = options;
       next();
     };
-  }
+  };
 
   router.use(attachOptions(options));
-  router.get("/:userId/:repoId/*", getOrAct);
-  router.post("/:userId/:repoId/*", upsert);
-  router.delete("/:userId/:repoId/*", del);
+  router.get('/:userId/:repoId/*', getOrAct);
+  router.post('/:userId/:repoId/*', upsert);
+  router.delete('/:userId/:repoId/*', del);
   return router;
 }

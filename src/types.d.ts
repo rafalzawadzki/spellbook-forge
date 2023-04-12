@@ -1,4 +1,4 @@
-export {}
+export {};
 
 export interface ForgeOptions {
   gitHost: string;
@@ -7,7 +7,7 @@ export interface ForgeOptions {
 declare global {
   namespace Express {
     export interface Request {
-      options: ForgeOptions
+      options: ForgeOptions;
     }
   }
 }

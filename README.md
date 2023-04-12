@@ -43,3 +43,32 @@ It will automatically generate a server for your prompts stored in a git reposit
 ## 📖 Documentation
 
 Full documentation coming soon!
+
+### Dependencies
+   1. [LangChain.js](https://js.langchain.com)
+   2. [simple-git](https://github.com/steveukx/git-js)
+
+### Prompt format
+Prompts must adhere to a specific format (JSON/YAML). See more info [here](https://github.com/hwchase17/langchain-hub/tree/master/prompts)
+
+#### Example
+
+```jsx
+├── prompt1
+│   ├── prompt.json
+│   └── readme.md
+└── collection
+    └── prompt2
+        ├── prompt.yaml
+        └── readme.md
+```
+
+The above file structure will result in the following API endpoints being generated:
+
+`{host}/prompt1`
+
+`{host}/collection/prompt2`
+
+#### Files
+1. `prompt.json` the main file with the prompt content and configuration.
+2. `readme.md` additional information about prompt usage, examples etc.

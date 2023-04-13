@@ -1,6 +1,6 @@
 {
   "name": "spellbook-forge",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Make your LLM prompts executable and version controlled by adding an API layer to a git repository.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

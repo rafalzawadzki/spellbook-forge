@@ -4,16 +4,16 @@ import { Request } from 'express';
 import crypto from 'crypto';
 import os from 'os';
 import simpleGit from 'simple-git';
-import yaml from "js-yaml";
+import yaml from 'js-yaml';
 
 const branchName = 'main';
 
 type PromptBundle = {
-  input_variables: [string]
+  input_variables: [string];
   //output_parser: null
-  template: string
-  template_format: string
-}
+  template: string;
+  template_format: string;
+};
 
 const acceptedExtensions = ['json', 'yaml', 'yml'];
 

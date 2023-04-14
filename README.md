@@ -45,54 +45,35 @@ It will automatically generate a server for your prompts stored in a git reposit
 
 ## 🚀 Try it
 
-> Open this link in your browser:
-> https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world. 
+> This prompt repository: https://github.com/rafalzawadzki/spellbook-prompts/hello-world
 > 
-> Read below for a longer explanation!
+> Can be executed like this: https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world?execute
+
 
 ➡️ Spellbook server: https://book.spell.so 
 
 The server uses `spellbook-forge` and is currently hooked up to Github as a git host. You can use any public repository with prompts in it (as long as they adhere to [the accepted format](#-documentation)).
 
-For example, using a repository [rafalzawadzki/spellbook-prompts](https://github.com/rafalzawadzki/spellbook-prompts), you can form an endpoint (and many more):
+For example, using a repository [rafalzawadzki/spellbook-prompts](https://github.com/rafalzawadzki/spellbook-prompts), you can form an endpoint ([and many more](#api)):
 
-### CRUD
-```
-GET https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world
-POST https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world
-PUT https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world
-DELETE https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world
-```
-
-### EXECUTION
-```
-// for simple prompts without templating
-GET https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world?execute
- 
-// for prompts with templating (recommended)
-POST https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world?execute
-body: {
-  "variables": [
-    "name": "World"
-  ]
-}
-
-// with different model
-GET https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world?execute=gpt4
-```
-
-
+https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world
 
 ## 📖 Documentation
 
 > 💡 Full documentation coming soon!
 
-### Dependencies
+### OpenAI key
+If you want to use the `execute` query on your own spellbook-forge instance, you need to provide an OpenAI API key in .env file or env variables:
+```md
+OPENAI_API_KEY=your-key
+```
+
+### Main dependencies
    1. [🦜🔗 LangChain.js](https://js.langchain.com)
    2. [simple-git](https://github.com/steveukx/git-js)
 
 ### Prompt format
-Prompts must adhere to a specific format (JSON/YAML). See more info [here](https://github.com/hwchase17/langchain-hub/tree/master/prompts).
+Prompt files must adhere to a specific format (JSON/YAML). See examples here [here](https://github.com/rafalzawadzki/spellbook-prompts).
 
 #### Example
 
@@ -116,16 +97,69 @@ The above file structure will result in the following API endpoints being genera
 1. `prompt.json` the main file with the prompt content and configuration.
 2. `readme.md` additional information about prompt usage, examples etc.
 
+### API
+
+#### CRUD
+
+- `GET` `{host}/path/to/prompt` - get prompt content
+
+- `POST` `{host}/path/to/prompt` - upsert prompt content
+
+- `DELETE` `{host}/path/to/prompt` - delete prompt (along with readme and metadata!)
+
+#### Execution
+
+- `GET` `{host}/path/to/prompt?execute` - for simple prompts without templating
+
+- `POST` `{host}/path/to/prompt?execute` - for prompts with templating (recommended)
+
+```
+// request body
+{
+  "variables": [
+    "name": "World"
+  ]
+}
+```
+
+- `GET` `{host}/path/to/prompt?execute=gpt4` - with different model (not implemented yet)
+
+### Using with LangChain
+
+You can fetch the prompt content and execute it using LangChain:
+
+```js
+import { PromptTemplate } from "langchain/prompts";
+
+export const run = async () => {
+  const template = await fetch(
+          "https://book.spell.so/rafalzawadzki/spellbook-prompts/hello-world"
+  ).then((res) => res.text());
+  const prompt = new PromptTemplate({template, inputVariables: ["product"]})
+  // do something with the prompt ...
+}
+```
+
+The presented solution ofc makes sense mostly in chaining, for simple prompts it's best to just use Spellbook directly!
+
+In the future I may contribute to extend the [LangChain `prompt/load`](https://js.langchain.com/docs/api/modules/prompts_load) function to support loading prompts from Spellbook, eg:
+
+```js
+import { loadPrompt } from "langchain/prompts/load";
+const prompt = await loadPrompt("{spellbook-host}/hello-world/prompt");
+```
+
+
 ## ☑️ Todo
 - [ ] Documentation
   - [ ] OpenAI API key
-  - [ ] Generated API
+  - [x] Generated API
   - [ ] Templating
-  - [ ] Using with LangChain
+  - [x] Using with LangChain
   - [ ] Prompt format
   - [ ] Available models
 - [ ] Add missing functionality
   - [ ] `POST /prompt?execute` with body
-  - [ ] Support for different models
+  - [ ] Support for different models, eg. `execute=gpt4`
   - [ ] Graceful error handling
   - [ ] Response formatting
